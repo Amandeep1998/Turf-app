@@ -1,0 +1,15 @@
+<%- include('../_layouts/adminheader') %>
+<h1>City List</h3>
+<a class="btn btn-primary" href="/admin/city/add-city">Add a City</a>
+<br><br>
+<table class="table table-striped">
+  <tr>
+    <th>City</th>
+  </tr>
+  <% city.forEach(function(city) { %>
+  <tr>
+    <td><%= city.cityName %></td>
+  </tr>
+  <% }); %>
+</table>
+<%- include('../_layouts/adminfooter') %>

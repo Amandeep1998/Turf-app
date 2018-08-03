@@ -1,0 +1,15 @@
+<%- include('../_layouts/adminheader') %>
+<h1>All Formats</h3>
+<a class="btn btn-primary" href="/admin/format/add-format">Add Format</a>
+<br><br>
+<table class="table table-striped">
+  <tr>
+    <th>Format</th>
+  </tr>
+  <% formats.forEach(function(format) { %>
+  <tr>
+    <td><%= format.format %></td>
+  </tr>
+  <% }); %>
+</table>
+<%- include('../_layouts/adminfooter') %>

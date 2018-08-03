@@ -1,0 +1,12 @@
+<%- include('../_layouts/adminheader') %>
+<h1>Add City</h3>
+<a class="btn btn-primary" href="/admin/city">Back to all city</a>
+<br><br>
+<form action="/admin/city/add-city" method="post">
+  <div class="form-group">
+    <label for="">City Name</label>
+    <input class="form-control" type="text" name="cityName" value="<%= cityName %>" placeholder="City Name">
+  </div>
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<%- include('../_layouts/adminfooter') %>

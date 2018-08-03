@@ -1,0 +1,12 @@
+<%- include('../_layouts/adminheader') %>
+<h1>Add Format</h3>
+<a class="btn btn-primary" href="/admin/format">Back to all Formats</a>
+<br><br>
+<form action="/admin/format/add-format" method="post">
+  <div class="form-group">
+    <label for="">Format</label>
+    <input class="form-control" type="text" name="format" value="<%= format %>" placeholder="Number-A-side">
+  </div>
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<%- include('../_layouts/adminfooter') %>

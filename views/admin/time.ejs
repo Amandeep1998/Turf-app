@@ -1,0 +1,36 @@
+<%- include('../_layouts/adminheader') %>
+<h1>Timings</h1>
+<br><br>
+
+<table class="table table-striped">
+  <tr>
+    <th>Schedule</th>
+    <th>Timings</th>
+  </tr>
+  <tr>
+    <td>Morning</td>
+    <td>
+      <% morningTimeArray.forEach(function(time) { %>
+      <%=time %>
+      <% }) %>
+    </td>
+  </tr>
+  <tr>
+    <td>Evening</td>
+    <td>
+      <% eveningTimeArray.forEach(function(time) { %>
+      <%=time %>
+      <% }) %>
+    </td>
+  </tr>
+  <tr>
+    <td>Night</td>
+    <td>
+      <% nightTimeArray.forEach(function(time) { %>
+      <%=time %>
+      <% }) %>
+    </td>
+  </tr>
+
+</table>
+<%- include('../_layouts/adminfooter') %>

@@ -1,0 +1,19 @@
+<%- include('../_layouts/adminheader') %>
+<h1>Add Area</h3>
+<a class="btn btn-primary" href="/admin/area">Back to all Area</a>
+<br><br>
+<form action="/admin/area/add-area" method="post">
+  <div class="form-group">
+    <label for="">Area Name</label>
+    <input class="form-control" type="text" name="areaName" value="<%= areaName %>" placeholder="Area Name">
+  </div>
+  <div class="form-group">
+    <select class="form-control" name="cityName">
+    <% city.forEach(function(city) { %>
+      <option value="<%=city.cityName%>"><%= city.cityName %></option>
+    <% }); %>
+    </select>
+  </div>
+  <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<%- include('../_layouts/adminfooter') %>

@@ -1,0 +1,17 @@
+<%- include('../_layouts/adminheader') %>
+<h1>Area List</h3>
+<a class="btn btn-primary" href="/admin/area/add-area">Add a Area</a>
+<br><br>
+<table class="table table-striped">
+  <tr>
+    <th>Area</th>
+    <th>City</th>
+  </tr>
+  <% area.forEach(function(area){ %>
+    <tr>
+      <td><%= area.areaName %></td>
+      <td><%= area.cityName %></td>
+    </tr>
+  <% }) %>
+</table>
+<%- include('../_layouts/adminfooter') %>
