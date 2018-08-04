@@ -15,32 +15,52 @@ var TurfSchema =  mongoose.Schema({
     required: true
     },
     area: {
-      type: String.
+      type: String,
       required: true
     },
     preferedFormat: {
       type: String,
       required: true
     },
-    specifications: {
-      turfType: {type: String},
-      groundSize: {type: String},
-      summary: {type: String}
+    turfType: {
+      type: String
+    },
+    groundSize: {
+      type: String
+    },
+    summary: {
+      type: String
     },
     address: {
       type: String,
       required: true
     },
-    morningTimeArray : {
-      type: Array
-    },
-    nightTimeArray : {
-      type: Array
-    },
-    eveningTimeArray: {
-      type: Array
-    }
+    morningTimeArray: [String],
+    eveningTimeArray: [String],
+    nightTimeArray: [String]
+
 });
+
+TurfSchema.methods.saveTimings = function(morningTimeArray, eveningTimeArray, nightTimeArray) {
+  var turf = this;
+  turf.morningTimeArray.push(morningTimeArray);
+  turf.eveningTimeArray.push(eveningTimeArray);
+  turf.nightTimeArray.push(nightTimeArray);
+  turf.save().catch((e) => {
+    console.log(e);
+  });
+}
+
+TurfSchema.methods.removeTimings = function() {
+  var turf = this;
+  turf.morningTimeArray = [];
+  turf.eveningTimeArray = [];
+  turf.nightTimeArray = [];
+
+  turf.save().catch((e) => {
+    console.log(e);
+  });
+}
 
 var Turf = mongoose.model('Turf', TurfSchema);
 

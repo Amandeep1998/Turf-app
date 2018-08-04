@@ -1,6 +1,12 @@
 <%- include('../_layouts/adminheader') %>
-<h1>Timings</h1>
-<br><br>
+  <div class="form-group">
+    <label for=""><b>Select Turf Name</b></label>
+    <select id ="turfName" class="form-control" name="turfName">
+      <% turfs.forEach(function(turf) { %>
+        <option value="<%= turf.turfName %>"><%= turf.turfName %></option>
+      <% }); %>
+    </select>
+  </div>
 
 <table class="table table-striped">
   <tr>
@@ -11,7 +17,9 @@
     <td>Morning</td>
     <td>
       <% morningTimeArray.forEach(function(time) { %>
-      <%=time %>
+      <button id="morning-time" type="button" class="btn btn-outline-primary timings">
+      <%= JSON.stringify(time) %>
+      </button>
       <% }) %>
     </td>
   </tr>
@@ -19,7 +27,9 @@
     <td>Evening</td>
     <td>
       <% eveningTimeArray.forEach(function(time) { %>
-      <%=time %>
+        <button id="evening-time" type="button" class="btn btn-outline-primary timings">
+        <%= JSON.stringify(time) %>
+        </button>
       <% }) %>
     </td>
   </tr>
@@ -27,10 +37,113 @@
     <td>Night</td>
     <td>
       <% nightTimeArray.forEach(function(time) { %>
-      <%=time %>
+        <button id="night-time" type="button" class="btn btn-outline-primary timings">
+        <%= JSON.stringify(time) %>
+        </button>
       <% }) %>
     </td>
   </tr>
-
+  <tr>
+    <td align="left">
+      <button class="btn btn-danger" type="button" id= "clear">Clear Timings</button>
+    </td>
+    <td  align="right">
+      <button class="btn btn-primary submit" type="submit" >Submit</button>
+    </td>
+  </tr>
 </table>
+
+<script type="text/javascript">
+  $(function() {
+    var morningTimeArray = [];
+    var eveningTimeArray = [];
+    var nightTimeArray = [];
+    //add and remove morning time array values on click
+    $('button#morning-time').on('click', function() {
+      $(this).toggleClass("active");
+      if($(this).hasClass("active")) {
+        var jsonParse = JSON.parse($(this).text());
+        morningTimeArray.push(jsonParse);
+      } else {
+        var jsonParseValue = JSON.parse($(this).text());
+        var arrayFilter = morningTimeArray.filter(function(item){
+          return item !== jsonParseValue;
+        });
+        morningTimeArray = arrayFilter;
+      }
+    });
+    //add and remove evening time array values on click
+    $('button#evening-time').on('click', function() {
+      $(this).toggleClass("active");
+      if($(this).hasClass("active")) {
+        var jsonParse = JSON.parse($(this).text());
+        eveningTimeArray.push(jsonParse);
+      } else {
+        var jsonParseValue = JSON.parse($(this).text());
+        var arrayFilter = eveningTimeArray.filter(function(item){
+          return item !== jsonParseValue;
+        });
+        eveningTimeArray = arrayFilter;
+      }
+
+    });
+    //add and remove night time array values on click
+
+    $('button#night-time').on('click', function() {
+      $(this).toggleClass("active");
+      if($(this).hasClass("active")) {
+        var jsonParse = JSON.parse($(this).text());
+        nightTimeArray.push(jsonParse);
+      } else {
+        var jsonParseValue = JSON.parse($(this).text());
+        var arrayFilter = nightTimeArray.filter(function(item){
+          return item !== jsonParseValue;
+        });
+        nightTimeArray = arrayFilter;
+      }
+    });
+
+    //submit the form to the server using ajax
+    $('button.submit').on('click', function() {
+      var turfName = $('#turfName option:selected').val();
+      $.ajax({
+          type: 'POST',
+          url: 'http://localhost:3000/admin/time/enter-turf-name',
+          data: JSON.stringify({
+            morningTimeArray: morningTimeArray,
+            eveningTimeArray: eveningTimeArray,
+            nightTimeArray: nightTimeArray,
+            turfName: turfName
+          }),
+          success: function(response) {
+              console.log('success');
+              window.location.href = response.redirect;
+          },
+          contentType: 'application/json',
+          error: function(jqXHR, textStatus, errorThrown){
+              console.log(textStatus);
+              console.log(jqXHR);
+          }
+      });
+    });
+
+    $('button#clear').click(function() {
+      var turfName = $('#turfName option:selected').val();
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:3000/admin/time/delete-timings',
+        data: {
+          turfName: turfName
+        },
+        success: function(response) {
+          console.log('success');
+          window.location.href = response.redirect;
+
+        }
+      })
+    });
+
+});
+</script>
+
 <%- include('../_layouts/adminfooter') %>
