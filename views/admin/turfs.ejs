@@ -1,4 +1,34 @@
 <%- include('../_layouts/adminheader') %>
 <h1>Turfs List</h3>
-<a class="btn btn-primary" href="/admin/turfs/add-turf">Add a Turf</a>
+<a class="btn btn-danger" href="/admin/turfs/add-turf">Add a Turf</a>
+<br><br>
+
+<table class="table table-striped table-dark">
+  <tr>
+    <th>Turf Name</th>
+    <th>Image</th>
+    <th>City</th>
+    <th>Area</th>
+    <th>Format</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <% turfs.forEach(function(turf) { %>
+    <tr>
+        <td><%= turf.turfName %></td>
+        <td>
+          <% if(turf.image == "") { %>
+            <img id="noimage" src="/images/noimage.png" alt="">
+          <% } else { %>
+            <img id="noimage" src="/turf_images/<%= turf._id %>/<%= turf.image %>" alt="">
+          <% } %>
+        </td>
+        <td><%= turf.city %></td>
+        <td><%= turf.area %></td>
+        <td><%= turf.preferedFormat %></td>
+        <td><a href="/admin/turfs/edit-turf/<%= turf._id %>">Edit</a></td>
+        <td><a href="/admin/turfs/delete-turf/<%= turf._id %>">Delete</a></td>
+    </tr>
+  <% }) %>
+</table>
 <%- include('../_layouts/adminfooter') %>

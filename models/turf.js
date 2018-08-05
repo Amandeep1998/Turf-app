@@ -35,10 +35,12 @@ var TurfSchema =  mongoose.Schema({
       type: String,
       required: true
     },
+    image: {
+      type: String
+    },
     morningTimeArray: [String],
     eveningTimeArray: [String],
-    nightTimeArray: [String]
-
+    nightTimeArray: [String],
 });
 
 TurfSchema.methods.saveTimings = function(morningTimeArray, eveningTimeArray, nightTimeArray) {

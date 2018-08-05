@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 
 const path = require('path');
 
@@ -28,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //set global errors
 app.locals.errors = null; //to set global errors to null whenevr the page loads *note*
 
+//fileUpload middleware
+app.use(fileUpload());
 //Body-parser middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -59,6 +62,23 @@ app.use(expressValidator({
       msg   : msg,
       value : value
     };
+  },
+  customValidators: {
+    isImage: function(value, filename) {
+      var extension = (path.extname(filename)).toLowerCase();
+        switch (extension) {
+          case '.jpg':
+            return '.jpg';
+          case '.jpeg':
+            return '.jpeg';
+          case '.png':
+            return '.png';
+          case '':
+            return '.jpg';
+          default:
+            return false;
+        }
+    }
   }
 }));
 

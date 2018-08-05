@@ -1,3 +1,12 @@
 button.timings {
   margin: 3px;
 }
+/* images from turf list */
+#noimage {
+  width: 100px;
+  height: 100px;
+}
+
+#imgPreview{
+  margin: 20px;
+}
