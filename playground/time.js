@@ -26,14 +26,14 @@ var nightTimeArray = [];
 
 time.hours(6).minutes(0).seconds(0);
 
-for(var i = 0; i< 36; i++) {
+for(var i = 0; i< 18; i++) {
     var firstPart = time.format('hh:mm A');
-    time.add(30, 'm');
+    time.add(60, 'm');
     var SecondPart = time.format('hh:mm A')
     var string = `${firstPart} - ${SecondPart}`;
-    if(i < 12 ) {
+    if(i < 6) {
       morningTimeArray.push(string);
-    } else if (i >= 12 && i < 24) {
+    } else if (i >= 6 && i < 12 ) {
       eveningTimeArray.push(string);
     } else {
       nightTimeArray.push(string);

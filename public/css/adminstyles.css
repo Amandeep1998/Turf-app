@@ -10,3 +10,17 @@ button.timings {
 #imgPreview{
   margin: 20px;
 }
+
+ul.gallery{
+  padding: 0;
+}
+
+ul.gallery:first-child{
+  margin-left: 0;
+}
+
+ul.gallery li{
+  margin: 20px;
+  display: inline-block;
+  list-style-type: none;
+}

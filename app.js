@@ -29,6 +29,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 //set global errors
 app.locals.errors = null; //to set global errors to null whenevr the page loads *note*
 
+//Find Turfs and display in index
+var {Turf} = require('./models/turf');
+
+Turf.find({}).then((turfs) => {
+    app.locals.turfs = turfs;
+}).catch((e) => {
+  console.log(e);
+  res.sendStatus(400);
+});
+
 //fileUpload middleware
 app.use(fileUpload());
 //Body-parser middleware
@@ -96,6 +106,7 @@ var admin_area = require('./routes/admin_area');
 var admin_format = require('./routes/admin_format');
 var admin_time = require('./routes/admin_time');
 var admin_turfs = require('./routes/admin_turfs');
+var turf = require('./routes/turf');
 var pages  = require('./routes/pages.js');
 
 
@@ -104,6 +115,7 @@ app.use('/admin/city', admin_city);
 app.use('/admin/area', admin_area);
 app.use('/admin/format', admin_format);
 app.use('/admin/time', admin_time);
+app.use('/turf', turf);
 app.use('/', pages);
 
 

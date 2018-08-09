@@ -1,0 +1,11 @@
+div.deck-align {
+  margin-top: 10px;
+  margin-bottom:10px;
+}
+.mySlides {
+  display:none;
+}
+
+button.timings {
+  margin: 2px;
+}

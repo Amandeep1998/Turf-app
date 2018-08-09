@@ -49,8 +49,6 @@ router.post('/add-turf', async(req, res) => {
   var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name:"";
   req.checkBody('turfName', 'Turf Name must have a value').notEmpty();
   req.checkBody('address', 'Address  must have a value').notEmpty();
-  req.checkBody('turfType', 'Turf Type must have a value').notEmpty();
-  req.checkBody('groundSize', 'Ground Size must have a value').notEmpty();
   req.checkBody('image', 'You must upload a image').isImage(imageFile);
 
 
@@ -156,21 +154,33 @@ router.get('/edit-turf/:id', async(req, res) => {
     if(!turf) {
       res.sendStatus(404);
     }
-    res.render('admin/edit_turf', {
-      turfName: turf.turfName,
-      errors: errors,
-      selectedCity: turf.city,
-      selectedArea: turf.area,
-      selectedpreferedFormat: turf.preferedFormat,
-      cities: cities,
-      areas: areas,
-      formats: formats,
-      address: turf.address,
-      image: turf.image,
-      turfType: turf.turfType,
-      groundSize: turf.groundSize,
-      summary: turf.summary,
-      id: turf._id
+    var galleryDir = 'public/turf_images/'+ turf._id + '/gallery';
+    var galleryImages = null;
+
+    fs.readdir(galleryDir, function(err, files) {
+      if(err) {
+         console.log(err);
+      } else {
+        galleryImages = files;
+
+        res.render('admin/edit_turf', {
+          turfName: turf.turfName,
+          errors: errors,
+          selectedCity: turf.city,
+          selectedArea: turf.area,
+          selectedpreferedFormat: turf.preferedFormat,
+          cities: cities,
+          areas: areas,
+          formats: formats,
+          address: turf.address,
+          image: turf.image,
+          turfType: turf.turfType,
+          groundSize: turf.groundSize,
+          summary: turf.summary,
+          id: turf._id,
+          galleryImages: galleryImages
+        });
+      }
     });
   } catch (e) {
     console.log(e);
@@ -183,8 +193,6 @@ router.post('/edit-turf/:id', (req, res) => {
   var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name:"";
   req.checkBody('turfName', 'Turf Name must have a value').notEmpty();
   req.checkBody('address', 'Address  must have a value').notEmpty();
-  req.checkBody('turfType', 'Turf Type must have a value').notEmpty();
-  req.checkBody('groundSize', 'Ground Size must have a value').notEmpty();
   req.checkBody('image', 'You must upload a image').isImage(imageFile);
 
 
@@ -256,5 +264,63 @@ router.post('/edit-turf/:id', (req, res) => {
       res.sendStatus(400);
     })
   }
+});
+
+
+//Post turf gallery
+router.post('/turf-gallery/:id', (req, res) => {
+  var turfImage = req.files.file;
+  var id = req.params.id;
+  var path = 'public/turf_images/'+id+'/gallery/' + req.files.file.name;
+  var thumbsPath = 'public/turf_images/'+id+'/gallery/thumbs/' + req.files.file.name;
+
+  turfImage.mv(path, function(err, files) {
+    if(err) {
+      return console.log(err);
+    }
+
+    resizeImg(fs.readFileSync(path), {width:100, height:100}).then((buf) => {
+      fs.writeFileSync(thumbsPath, buf);
+    });
+  });
+  res.sendStatus(200).end();
+});
+
+//Get /admin/turfs/delete-turf/:id
+router.get('/delete-turf/:id', async(req, res) => {
+  var id = req.params.id;
+  var path = 'public/turf_images/' + id;
+  fs.remove(path, function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+     Turf.findByIdAndRemove(id).then(() => {
+       req.flash('success', 'Turf Deleted');
+       res.redirect('/admin/turfs');
+     })
+    }
+  })
+});
+//Get Delete image
+router.get('/delete-image/:image', (req, res) => {
+  var id = req.query.id;
+  var image = req.params.image;
+  var galleryImage = 'public/turf_images/' + id + '/gallery/' + image;
+  var thumbImage = 'public/turf_images/' + id + '/gallery/thumbs/' + image;
+
+  fs.remove(galleryImage, function(err) {
+    if(err) {
+      return console.log(err);
+    } else {
+      fs.remove(thumbImage, function(err) {
+        if(err) {
+          return console.log(err);
+        } else {
+          req.flash('success', 'Image Deleted');
+          res.redirect('/admin/turfs/edit-turf/' + id);
+        }
+      });
+    }
+  });
 });
 module.exports = router;

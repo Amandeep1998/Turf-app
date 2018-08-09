@@ -27,7 +27,7 @@
         <td><%= turf.area %></td>
         <td><%= turf.preferedFormat %></td>
         <td><a href="/admin/turfs/edit-turf/<%= turf._id %>">Edit</a></td>
-        <td><a href="/admin/turfs/delete-turf/<%= turf._id %>">Delete</a></td>
+        <td><a class="confirmdeletion" href="/admin/turfs/delete-turf/<%= turf._id %>">Delete</a></td>
     </tr>
   <% }) %>
 </table>

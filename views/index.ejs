@@ -1,3 +1,24 @@
 <% include _layouts/header %>
-
+<div class="row turfs">
+  <% turfs.forEach(function(turf) { %>
+    <div class="col-md-3 col-xs-3">
+      <div class="card-deck deck-align">
+          <div class="card text-center">
+            <a href="/turf/<%=turf._id%>">
+              <img class="card-img-top" src="/turf_images/<%=turf._id%>/<%=turf.image%>" alt="Card image cap">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title"><%= turf.turfName %></h5>
+              <h6 class="card-subtitle mb-2 text-muted"><%= turf.city %></h6>
+              <p><%= turf.area %></p>
+            </div>
+            <div class="card-footer">
+              <a href="/turf/<%=turf._id%>" class="btn btn-success">Play</a>
+              <button class="btn btn-warning"><%= turf.preferedFormat %></button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
 <% include _layouts/footer %>
