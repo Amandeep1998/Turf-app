@@ -8,6 +8,8 @@ var {Turf} = require('./../models/turf');
 var {City} = require('./../models/city');
 var {Area} = require('./../models/area');
 var {Format} = require('./../models/format');
+var {Day} = require('./../models/turf');
+
 //Get /admin/turfs
 router.get('/', async(req, res) => {
   try {
@@ -65,7 +67,7 @@ router.post('/add-turf', async(req, res) => {
   var cities = await City.find({});
   var areas = await Area.find({});
   var formats = await Format.find({});
-
+  var day = new Day();
   if(errors) {
     res.render('admin/add_turf', {
       errors: errors,
@@ -103,7 +105,8 @@ router.post('/add-turf', async(req, res) => {
           turfType,
           groundSize,
           summary,
-          image: imageFile
+          image: imageFile,
+          day: day
         });
         turf.save().then((turf) => {
           mkdirp('public/turf_images/'+turf._id, function(err) {//it is use to make directories

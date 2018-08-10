@@ -1,57 +1,73 @@
 <%- include('../_layouts/adminheader') %>
 <div class="container">
-  <br>
-  <button class="btn btn-primary" id="submit" type="button">Submit</button>
-    <table class="table table-striped table-bordered">
-      <tr>
-        <th colspan="2" class="thead-dark text-center">Morning</th>
-      </tr>
-     <tr>
-        <th>Time</th>
-        <th>Price</th>
-      </tr>
-      <% morningTimeArray.forEach(function(time) { %>
-        <tr>
-            <td><%=time.time%></td>
-            <td><input id="morning" type="text" value="0"></td>
-        </tr>
-      <% }) %>
-    </table>
-    <br>
-    <table class="table table-striped table-bordered">
-      <tr>
-        <th colspan="2" class="thead-dark text-center">Evening</th>
-      </tr>
-     <tr>
-        <th>Time</th>
-        <th>Price</th>
-      </tr>
-      <% eveningTimeArray.forEach(function(time) { %>
-        <tr>
-            <td><%=time.time%></td>
-            <td><input id="evening" type="text" value="0"></td>
-        </tr>
-      <% }) %>
-    </table>
-    <br>
-    <table>
-      <table class="table table-striped table-bordered">
-        <tr>
-          <th colspan="2" class="thead-dark text-center">Night</th>
-        </tr>
-       <tr>
-          <th>Time</th>
-          <th>Price</th>
-        </tr>
-        <% nightTimeArray.forEach(function(time) { %>
-          <tr>
-              <td><%=time.time%></td>
-              <td><input id="night" type="text" value="0"></td>
-          </tr>
-        <% }) %>
-      </table>
-    </table>
-    <input id="getID" type="hidden" name="" value="<%=id%>">
+  <div class="row">
+    <div class="col-md-12">
+      <form class="" action="/admin/time/save" method="post">
+          <h3><%=day.toUpperCase()%></h3>
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th colspan="2" class="thead-dark text-center">Morning</th>
+            </tr>
+           <tr>
+              <th>Time</th>
+              <th>Price</th>
+            </tr>
+            <% morningTimeArray.forEach(function(time) { %>
+              <tr>
+                  <td><%=time%></td>
+                  <td><input id="morningPrice" type="text" value="0"></td>
+              </tr>
+            <% }) %>
+          </table>
+          <br>
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th colspan="2" class="thead-dark text-center">Evening</th>
+            </tr>
+           <tr>
+              <th>Time</th>
+              <th>Price</th>
+            </tr>
+            <% eveningTimeArray.forEach(function(time) { %>
+              <tr>
+                  <td><%=time%></td>
+                  <td><input id="eveningPrice" type="text" value="0"></td>
+              </tr>
+            <% }) %>
+          </table>
+          <br>
+          <table>
+            <table class="table table-striped table-bordered">
+              <tr>
+                <th colspan="2" class="thead-dark text-center">Night</th>
+              </tr>
+             <tr>
+                <th>Time</th>
+                <th>Price</th>
+              </tr>
+              <% nightTimeArray.forEach(function(time) { %>
+                <tr>
+                    <td><%=time%></td>
+                    <td><input id="nightPrice" type="text" value="0"></td>
+                </tr>
+              <% }) %>
+            </table>
+          </table>
+          <button class="btn btn-success" id="save" type="submit">Save</button>
+          <div style="display:none">
+            <input type="hidden" name="turfName" value="<%=turfName%>">
+            <input type="hidden" name="morningTimeArray" value="<%= JSON.stringify(morningTimeArray)%>">
+            <input type="hidden" name="eveningTimeArray" value="<%= JSON.stringify(eveningTimeArray)%>">
+            <input type="hidden" name="nightTimeArray" value="<%= JSON.stringify(nightTimeArray)%>">
+            <input type="hidden" name="day" value="<%=day%>">
+            <input type="hidden" name="morningPrices" id="input-morning">
+            <input type="hidden" name="eveningPrices"  id="input-evening">
+            <input type="hidden" name="nightPrices"  id="input-night">
+          </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <%- include('../_layouts/adminfooter') %>
@@ -61,41 +77,22 @@
     var eveningPrices = [];
     var nightPrices = [];
 
-    $('#submit').click(function() {
-      var id = $('#getID').val();
-      $("input[id*='morning']").each(function(i, price) {
+    $('#save').click(function() {
+      $("input[id*='morningPrice']").each(function(i, price) {
         morningPrices.push($(this).val());
       })
-      console.log(morningPrices);
-      $("input[id*='evening']").each(function(i, price) {
+      $("input[id*='eveningPrice']").each(function(i, price) {
         eveningPrices.push($(this).val());
       })
-      console.log(eveningPrices);
-      $("input[id*='night']").each(function(i, price) {
+      $("input[id*='nightPrice']").each(function(i, price) {
         nightPrices.push($(this).val());
       })
-      console.log(nightPrices);
+      $('#input-morning').val(JSON.stringify(morningPrices));
+      $('#input-evening').val(JSON.stringify(eveningPrices));
+      $('#input-night').val(JSON.stringify(nightPrices));
+   });
 
-      $.ajax({
-          type: 'POST',
-          url: 'http://localhost:3000/admin/time/save-price',
-          data: JSON.stringify({
-            morningPrices: morningPrices,
-            eveningPrices: eveningPrices,
-            nightPrices: nightPrices,
-            id: id
-          }),
-          success: function(response) {
-              console.log('success');
-              window.location.href = response.redirect;
-          },
-          contentType: 'application/json',
-          error: function(jqXHR, textStatus, errorThrown){
-              console.log(textStatus);
-              console.log(jqXHR);
-          }
-      });
-    });
+
 
  });
 </script>

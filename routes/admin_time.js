@@ -2,6 +2,7 @@ const express = require('express');
 var router  = express.Router();
 const moment = require('moment');
 
+var {Day} = require('./../models/turf');
 var {Turf} = require('./../models/turf');
 
 const {morningTimeArray} = require('./../playground/time.js')
@@ -20,52 +21,35 @@ router.get('/', async(req, res) => {
 
 
 
-router.post('/enter-turf-name', async(req, res) =>{
-    var morningTimeArray = req.body.morningTimeArray;
-    var eveningTimeArray = req.body.eveningTimeArray;
-    var nightTimeArray = req.body.nightTimeArray;
+router.post('/post-timings', async(req, res) =>{
+    var morningTimeArray = JSON.parse(req.body.morningTimeArray);
+    var eveningTimeArray = JSON.parse(req.body.eveningTimeArray);
+    var nightTimeArray = JSON.parse(req.body.nightTimeArray);
     var turfName = req.body.turfName;
+    var day = req.body.day;
 
     var turf = await Turf.findOne({turfName: turfName});
-    turf.saveTimings(morningTimeArray, eveningTimeArray, nightTimeArray);
-
-
-    req.flash('success', 'Timings successfully Added');
-    res.send({
-      redirect: '/admin/time/enter-price/'+ turf._id,
-  });
+    res.render('admin/price', {
+        turfName,
+        morningTimeArray,
+        eveningTimeArray,
+        nightTimeArray,
+        day
+    });
 });
 
-router.get('/enter-price/:id', async(req, res) => {
-  var id =  req.params.id;
-  var turf = await Turf.findById(id);
-  var morningTimeArray = turf.morningTimeArray;
-  var eveningTimeArray = turf.eveningTimeArray;
-  var nightTimeArray = turf.nightTimeArray;
-  res.render('admin/price', {
-    morningTimeArray,
-    eveningTimeArray,
-    nightTimeArray,
-    id
-  });
-});
 
-router.post('/save-price', async(req, res) => {
-  var id = req.body.id;
-  var morningPrices = req.body.morningPrices;
-  var eveningPrices = req.body.eveningPrices;
-  var nightPrices = req.body.nightPrices;
-
-  var turf = await Turf.findById(id);
-  turf.savePrices(morningPrices, eveningPrices, nightPrices);
-
-});
-
-router.post('/delete-timings', async(req, res) =>{
-    var turfName = req.body.turfName;
-    var turf = await Turf.findOne({turfName: turfName});
-    turf.removeTimings();
-    req.flash('success', 'Timings deleted')
-    res.send({redirect: '/admin/time'});
+router.post('/save', async(req, res) => {
+  var morningTimeArray = JSON.parse(req.body.morningTimeArray);
+  var eveningTimeArray = JSON.parse(req.body.eveningTimeArray);
+  var nightTimeArray = JSON.parse(req.body.nightTimeArray);
+  var turfName = req.body.turfName;
+  var days = req.body.day;
+  var morningPrices = JSON.parse(req.body.morningPrices);
+  var eveningPrices = JSON.parse(req.body.eveningPrices);
+  var nightPrices = JSON.parse(req.body.nightPrices);
+  var turf = await Turf.findOne({turfName: turfName});
+  turf.saveTimingsandPrices(morningTimeArray, eveningTimeArray, nightTimeArray, morningPrices, eveningPrices, nightPrices, days);
+  res.end();
 });
 module.exports = router;

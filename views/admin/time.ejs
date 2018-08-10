@@ -1,58 +1,74 @@
 <%- include('../_layouts/adminheader') %>
-  <div class="form-group">
-    <label for=""><b>Select Turf Name</b></label>
-    <select id ="turfName" class="form-control" name="turfName">
-      <% turfs.forEach(function(turf) { %>
-        <option value="<%= turf.turfName %>"><%= turf.turfName %></option>
-      <% }); %>
-    </select>
+<div class="row">
+  <div class="col-md-12">
+    <form action="/admin/time/post-timings" method="post">
+      <div class="form-group">
+        <label for=""><b>Select Turf Name</b></label>
+        <select id ="turfName" class="form-control" name="turfName">
+          <% turfs.forEach(function(turf) { %>
+            <option value="<%= turf.turfName %>"><%= turf.turfName %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name= "day">
+            <option value="sunday">Sunday</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+        </select>
+      </div>
+      <div class="form-group" style="display:none">
+        <input id="input-morning" type="hidden" name="morningTimeArray">
+        <input id="input-evening" type="hidden" name="eveningTimeArray">
+        <input id="input-night" type="hidden" name="nightTimeArray">
+      </div>
+
+
+      <table class="table table-striped table-dark">
+        <tr>
+          <th>Schedule</th>
+          <th>Timings</th>
+        </tr>
+        <tr>
+          <td>Morning</td>
+          <td>
+            <% morningTimeArray.forEach(function(time) { %>
+            <button id="morning-time" type="button" class="btn btn-outline-info timings"><%= time %></button>
+            <% }) %>
+          </td>
+        </tr>
+        <tr>
+          <td>Evening</td>
+          <td>
+            <% eveningTimeArray.forEach(function(time) { %>
+              <button id="evening-time" type="button" class="btn btn-outline-info timings"><%= time %></button>
+            <% }) %>
+          </td>
+        </tr>
+        <tr>
+          <td>Night</td>
+          <td>
+            <% nightTimeArray.forEach(function(time) { %>
+              <button id="night-time" type="button" class="btn btn-outline-info timings"><%= time %></button>
+            <% }) %>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <a id="clear" class="btn btn-danger" href="">Clear Timings</a>
+          </td>
+          <td  align="right">
+            <button id="add-price" class="btn btn-success" type="submit" name="button">Add price</button>
+          </td>
+        </tr>
+      </table>
+   </form>
   </div>
-
-<table class="table table-striped table-dark">
-  <tr>
-    <th>Schedule</th>
-    <th>Timings</th>
-  </tr>
-  <tr>
-    <td>Morning</td>
-    <td>
-      <% morningTimeArray.forEach(function(time) { %>
-      <button id="morning-time" type="button" class="btn btn-outline-primary timings">
-      <%= JSON.stringify(time) %>
-      </button>
-      <% }) %>
-    </td>
-  </tr>
-  <tr>
-    <td>Evening</td>
-    <td>
-      <% eveningTimeArray.forEach(function(time) { %>
-        <button id="evening-time" type="button" class="btn btn-outline-primary timings">
-        <%= JSON.stringify(time) %>
-        </button>
-      <% }) %>
-    </td>
-  </tr>
-  <tr>
-    <td>Night</td>
-    <td>
-      <% nightTimeArray.forEach(function(time) { %>
-        <button id="night-time" type="button" class="btn btn-outline-primary timings">
-        <%= JSON.stringify(time) %>
-        </button>
-      <% }) %>
-    </td>
-  </tr>
-  <tr>
-    <td align="left">
-      <button class="btn btn-danger" type="button" id= "clear">Clear Timings</button>
-    </td>
-    <td  align="right">
-      <button class="btn btn-success add-price" type="submit" >Add Price</button>
-    </td>
-  </tr>
-</table>
-
+</div>
 
 
 <%- include('../_layouts/adminfooter') %>
@@ -61,90 +77,62 @@
     var morningTimeArray = [];
     var eveningTimeArray = [];
     var nightTimeArray = [];
-    //add and remove morning time array values on click
-    $('button#morning-time').on('click', function() {
-      $(this).toggleClass("active");
-      if($(this).hasClass("active")) {
-        var jsonParse = JSON.parse($(this).text());
-        morningTimeArray.push(jsonParse);
-      } else {
-        var jsonParseValue = JSON.parse($(this).text());
-        var arrayFilter = morningTimeArray.filter(function(item){
-          return item !== jsonParseValue;
-        });
-        morningTimeArray = arrayFilter;
-      }
-    });
-    //add and remove evening time array values on click
-    $('button#evening-time').on('click', function() {
-      $(this).toggleClass("active");
-      if($(this).hasClass("active")) {
-        var jsonParse = JSON.parse($(this).text());
-        eveningTimeArray.push(jsonParse);
-      } else {
-        var jsonParseValue = JSON.parse($(this).text());
-        var arrayFilter = eveningTimeArray.filter(function(item){
-          return item !== jsonParseValue;
-        });
-        eveningTimeArray = arrayFilter;
-      }
 
-    });
-    //add and remove night time array values on click
-
-    $('button#night-time').on('click', function() {
-      $(this).toggleClass("active");
-      if($(this).hasClass("active")) {
-        var jsonParse = JSON.parse($(this).text());
-        nightTimeArray.push(jsonParse);
+    $('button#morning-time').click(function() {
+      var text = $(this).text();
+      $(this).toggleClass('active');
+      if($(this).hasClass('active')) {
+        morningTimeArray.push(text);
+        console.log(morningTimeArray);
       } else {
-        var jsonParseValue = JSON.parse($(this).text());
-        var arrayFilter = nightTimeArray.filter(function(item){
-          return item !== jsonParseValue;
+        var newTimings = morningTimeArray.filter(function (time) {
+          return time !== text;
         });
-        nightTimeArray = arrayFilter;
+        morningTimeArray = newTimings;
+        console.log(morningTimeArray);
       }
     });
 
-    //submit the form to the server using ajax
-    $('button.add-price').on('click', function() {
-      var turfName = $('#turfName option:selected').val();
-      $.ajax({
-          type: 'POST',
-          url: 'http://localhost:3000/admin/time/enter-turf-name',
-          data: JSON.stringify({
-            morningTimeArray: morningTimeArray,
-            eveningTimeArray: eveningTimeArray,
-            nightTimeArray: nightTimeArray,
-            turfName: turfName
-          }),
-          success: function(response) {
-              console.log('success');
-              window.location.href = response.redirect;
-          },
-          contentType: 'application/json',
-          error: function(jqXHR, textStatus, errorThrown){
-              console.log(textStatus);
-              console.log(jqXHR);
-          }
-      });
+    $('button#evening-time').click(function() {
+      var text = $(this).text();
+      $(this).toggleClass('active');
+      if($(this).hasClass('active')) {
+        eveningTimeArray.push(text);
+        console.log(eveningTimeArray);
+      } else {
+        var newTimings = eveningTimeArray.filter(function (time) {
+          return time !== text;
+        });
+        eveningTimeArray = newTimings;
+        console.log(eveningTimeArray);
+      }
     });
 
-    $('button#clear').click(function() {
-      var turfName = $('#turfName option:selected').val();
-      $.ajax({
-        type: 'POST',
-        url: 'http://localhost:3000/admin/time/delete-timings',
-        data: {
-          turfName: turfName
-        },
-        success: function(response) {
-          console.log('success');
-          window.location.href = response.redirect;
-
-        }
-      })
+    $('button#night-time').click(function() {
+      var text = $(this).text();
+      $(this).toggleClass('active');
+      if($(this).hasClass('active')) {
+        nightTimeArray.push(text);
+        console.log(nightTimeArray);
+      } else {
+        var newTimings = nightTimeArray.filter(function (time) {
+          return time !== text;
+        });
+        nightTimeArray = newTimings;
+        console.log(nightTimeArray);
+      }
     });
+
+    $('#add-price').click(function() {
+      $()
+    });
+
+    $('#add-price').click(function() {
+      $('#input-morning').val(JSON.stringify(morningTimeArray));
+      $('#input-evening').val(JSON.stringify(eveningTimeArray));
+      $('#input-night').val(JSON.stringify(nightTimeArray));
+    });
+
 
 });
 </script>
