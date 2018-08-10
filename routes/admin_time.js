@@ -50,6 +50,7 @@ router.post('/save', async(req, res) => {
   var nightPrices = JSON.parse(req.body.nightPrices);
   var turf = await Turf.findOne({turfName: turfName});
   turf.saveTimingsandPrices(morningTimeArray, eveningTimeArray, nightTimeArray, morningPrices, eveningPrices, nightPrices, days);
-  res.end();
+  req.flash('success', 'Data Saved');
+  res.redirect('/admin/time');
 });
 module.exports = router;

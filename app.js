@@ -7,6 +7,9 @@ const fileUpload = require('express-fileupload');
 
 const path = require('path');
 
+var moment = require('moment');
+
+
 //Connect to database
 mongoose.connect('mongodb://localhost:27017/turf-app', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;

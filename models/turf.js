@@ -1,191 +1,5 @@
 const mongoose = require('mongoose');
-
-
-//DaySchema
-var DaySchema = new mongoose.Schema({
-  sunday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  monday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  tuesday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  wednesday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  thursday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  friday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  },
-  saturday: {
-    morningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    eveningTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-    nightTimeArray: [{
-      time: {
-        type: String
-      },
-      price: {
-        type: String
-      }
-    }],
-  }
-});
+var {DaySchema} = require('./day');
 
 //TurfSchema
 var TurfSchema =  mongoose.Schema({
@@ -252,17 +66,19 @@ var TurfSchema =  mongoose.Schema({
     day: DaySchema
 });
 
-
-TurfSchema.methods.removeTimings = function() {
+TurfSchema.methods.pushTodaysTimings = function(day) {
   var turf = this;
-  turf.morningTimeArray = [];
-  turf.eveningTimeArray = [];
-  turf.nightTimeArray = [];
-
-  turf.save().catch((e) => {
+  if(day == "friday") {
+      turf.morningTimeArray = turf.day.friday.morningTimeArray;
+  }
+  turf.save().then(() => {
+    console.log(turf.morningTimeArray);
+  }).catch((e) => {
     console.log(e);
-  });
+  })
 }
+
+
 
 TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTimeArray, nightTimeArray, morningPrices, eveningPrices, nightPrices, days) {
   var turf = this;
@@ -288,7 +104,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
     array.forEach((item) => {
       turf.day.sunday.morningTimeArray.push({
         time: item.ctime,
-        price: item.cprice
+        price: item.cprice,
+        available: true
       });
     });
 
@@ -297,7 +114,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
     array.forEach((item) => {
       turf.day.sunday.eveningTimeArray.push({
         time: item.ctime,
-        price: item.cprice
+        price: item.cprice,
+        available: true
       });
     });
 
@@ -306,7 +124,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
     array.forEach((item) => {
       turf.day.sunday.nightTimeArray.push({
         time: item.ctime,
-        price: item.cprice
+        price: item.cprice,
+        available: true
       });
     });
       break;
@@ -317,7 +136,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
      array.forEach((item) => {
        turf.day.monday.morningTimeArray.push({
          time: item.ctime,
-         price: item.cprice
+         price: item.cprice,
+         available: true
        });
      });
 
@@ -326,7 +146,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
      array.forEach((item) => {
        turf.day.monday.eveningTimeArray.push({
          time: item.ctime,
-         price: item.cprice
+         price: item.cprice,
+         available: true
        });
      });
 
@@ -335,7 +156,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
      array.forEach((item) => {
        turf.day.monday.nightTimeArray.push({
          time: item.ctime,
-         price: item.cprice
+         price: item.cprice,
+         available: true
        });
      });
        break;
@@ -346,7 +168,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
        array.forEach((item) => {
          turf.day.tuesday.morningTimeArray.push({
            time: item.ctime,
-           price: item.cprice
+           price: item.cprice,
+           available: true
          });
        });
 
@@ -355,7 +178,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
        array.forEach((item) => {
          turf.day.tuesday.eveningTimeArray.push({
            time: item.ctime,
-           price: item.cprice
+           price: item.cprice,
+           available: true
          });
        });
 
@@ -364,7 +188,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
        array.forEach((item) => {
          turf.day.tuesday.nightTimeArray.push({
            time: item.ctime,
-           price: item.cprice
+           price: item.cprice,
+           available: true
          });
        });
          break;
@@ -375,7 +200,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
          array.forEach((item) => {
            turf.day.wednesday.morningTimeArray.push({
              time: item.ctime,
-             price: item.cprice
+             price: item.cprice,
+             available: true
            });
          });
 
@@ -384,7 +210,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
          array.forEach((item) => {
            turf.day.wednesday.eveningTimeArray.push({
              time: item.ctime,
-             price: item.cprice
+             price: item.cprice,
+             available: true
            });
          });
 
@@ -393,7 +220,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
          array.forEach((item) => {
            turf.day.wednesday.nightTimeArray.push({
              time: item.ctime,
-             price: item.cprice
+             price: item.cprice,
+             available: true
            });
          });
            break;
@@ -404,7 +232,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
            array.forEach((item) => {
              turf.day.thursday.morningTimeArray.push({
                time: item.ctime,
-               price: item.cprice
+               price: item.cprice,
+               available: true
              });
            });
 
@@ -413,7 +242,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
            array.forEach((item) => {
              turf.day.thursday.eveningTimeArray.push({
                time: item.ctime,
-               price: item.cprice
+               price: item.cprice,
+               available: true
              });
            });
 
@@ -422,7 +252,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
            array.forEach((item) => {
              turf.day.thursday.nightTimeArray.push({
                time: item.ctime,
-               price: item.cprice
+               price: item.cprice,
+               available: true
              });
            });
              break;
@@ -433,7 +264,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
              array.forEach((item) => {
                turf.day.friday.morningTimeArray.push({
                  time: item.ctime,
-                 price: item.cprice
+                 price: item.cprice,
+                 available: true
                });
              });
 
@@ -442,7 +274,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
              array.forEach((item) => {
                turf.day.friday.eveningTimeArray.push({
                  time: item.ctime,
-                 price: item.cprice
+                 price: item.cprice,
+                 available: true
                });
              });
 
@@ -451,7 +284,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
              array.forEach((item) => {
                turf.day.friday.nightTimeArray.push({
                  time: item.ctime,
-                 price: item.cprice
+                 price: item.cprice,
+                 available: true
                });
              });
                break;
@@ -462,7 +296,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
                array.forEach((item) => {
                  turf.day.saturday.morningTimeArray.push({
                    time: item.ctime,
-                   price: item.cprice
+                   price: item.cprice,
+                   available: true
                  });
                });
 
@@ -471,7 +306,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
                array.forEach((item) => {
                  turf.day.saturday.eveningTimeArray.push({
                    time: item.ctime,
-                   price: item.cprice
+                   price: item.cprice,
+                   available: true
                  });
                });
 
@@ -480,7 +316,8 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
                array.forEach((item) => {
                  turf.day.saturday.nightTimeArray.push({
                    time: item.ctime,
-                   price: item.cprice
+                   price: item.cprice,
+                   available: true
                  });
                });
                  break;
@@ -573,7 +410,16 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
 //   });
 // }
 
-
+// TurfSchema.methods.removeTimings = function() {
+//   var turf = this;
+//   turf.morningTimeArray = [];
+//   turf.eveningTimeArray = [];
+//   turf.nightTimeArray = [];
+//
+//   turf.save().catch((e) => {
+//     console.log(e);
+//   });
+// }
 
 var Turf = mongoose.model('Turf', TurfSchema);
 var Day = mongoose.model('Day', DaySchema);
