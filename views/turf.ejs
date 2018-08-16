@@ -80,7 +80,41 @@
               </tr>
             </table>
           </div>
-          <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">...</div>
+          <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
+            <div class="row">
+              <div class="col-md-12">
+                <ul style="list-style-type:none;" class="display-reviews">
+                  <% turf.reviews.forEach(function(data) { %>
+                    <li>
+                       <span style="color:blue"><b><%=data.name%></b></span><br>
+                      <p><%=data.comment%></p>
+                    </li>
+                    <hr>
+                  <% }) %>
+                  <script id="reviews-template" type="text/template">
+                    <li>
+                      <span style="color:blue"><b>{{name}}</b></span><br>
+                      <p>{{comment}}</p>
+                    </li>
+                  </script>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="hidden" id="turf-id" value="<%=turf._id%>">
+                <% if(user) { %>
+                  <input type="hidden" id="user" value="<%=user.username%>">
+                  <form class="form-group">
+                    <textarea class="form-control" rows="3" cols="30" id="comment"></textarea> <br>
+                    <button style="float: right;"type="submit"  class="btn btn-primary"  id="send-review">Send</button>
+                  </form>
+                <% }else { %>
+                  <p class="text-center">You must <a href="/users/login" class="btn btn-success">LogIn</a> to write a Review</p>
+                <% } %>
+              </div>
+            </div>
+          </div>
           <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
       </div>
     </div>
@@ -91,6 +125,32 @@
 </div>
 <% include _layouts/footer %>
 <script>
+  $(function() {
+    var id  = $('input#turf-id').val();
+    var userName = $('input#user').val();
+    $('button#send-review').click(function(e) {
+      e.preventDefault();
+      var comment = $('textarea#comment').val();
+      $('textarea#comment').val('')
+      $.post("/turf/reviews/" + id,
+        {
+            userName: userName,
+            comment: comment
+        },
+        function(data, status){
+            var template = jQuery('#reviews-template').html(); //using mustache
+            var html = Mustache.render(template, {
+              name: data.userName,
+              comment: data.comment
+            });
+            jQuery('ul.display-reviews').append(html);
+            //using normal jquery
+            // jQuery('ul.display-reviews').append(`<li><b>${data.userName}</b><br> <p>${data.comment}</p></li><hr>`);
+        });
+    });
+  });
+
+
   // var myIndex = 0;
   // carousel();
   //

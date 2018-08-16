@@ -1,23 +1,41 @@
 <%- include('../_layouts/adminheader') %>
 <div class="row">
   <div class="col-md-12">
+    <br><br>
    <table class="table table-striped">
      <tr>
        <th>Not Available</th>
        <th>Settings</th>
      </tr>
      <% times.forEach(function(time) { %>
-       <tr>
+       <tr class="row-manager" id="<%=time%>">
          <td><%=time%></td>
-         <td><a href="/admin/time/change-available/<%=time%>" class="btn btn-success">Change to Available</a></td>
+         <td><button id="<%=time%>" class="btn btn-success time">Change to available</button></td>
        </tr>
     <% })%>
    </table>
+   <input type="hidden" id="day" value="<%=day%>">
+   <input type="hidden" id="turf-name" value="<%=turfName%>">
+
   </div>
 </div>
 
 
 <%- include('../_layouts/adminfooter') %>
 <script type="text/javascript">
+  $(function() {
+    var day = $('input#day').val();
+    var turfName = $('input#turf-name').val();
 
+
+    $('button.time').click(function() {
+      $.get("/admin/available/change-available/" + turfName + "/" + day + "/" +$(this).attr('id'), function(data, status){
+        $('tr.row-manager').each(function() {
+           if($(this).attr('id') == data.time) {
+             $(this).fadeOut(2000);
+           }
+        });
+     });
+    });
+  })
 </script>

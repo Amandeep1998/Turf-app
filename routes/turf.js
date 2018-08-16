@@ -444,4 +444,17 @@ router.get('/book-now/:id', async(req, res) => {
 
 });
 
+router.post('/reviews/:id', async(req, res) => {
+  var id = req.params.id;
+  var userName = req.body.userName;
+  var comment =  req.body.comment;
+  try {
+    var turf = await Turf.findById(id);
+  } catch (e) {
+    res.sendStatus(400);
+  }
+  turf.pushReview(userName, comment);
+  res.send({userName, comment});
+});
+
 module.exports = router;

@@ -68,6 +68,7 @@ router.post('/add-turf', async(req, res) => {
   var areas = await Area.find({});
   var formats = await Format.find({});
   var day = new Day();
+  var reviews = [];
   if(errors) {
     res.render('admin/add_turf', {
       errors: errors,
@@ -106,7 +107,8 @@ router.post('/add-turf', async(req, res) => {
           groundSize,
           summary,
           image: imageFile,
-          day: day
+          day: day,
+          reviews: reviews
         });
         turf.save().then((turf) => {
           mkdirp('public/turf_images/'+turf._id, function(err) {//it is use to make directories

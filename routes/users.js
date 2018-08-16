@@ -40,7 +40,7 @@ router.post('/signup', async(req, res) => {
         email,
         password,
         mobileNumber,
-        admin: 1
+        admin: 0
       });
       user.save().then((user) => {
         console.log(user);
