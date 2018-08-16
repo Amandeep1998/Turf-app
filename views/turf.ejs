@@ -19,7 +19,34 @@
           <p><b>Area</b> - <%= turf.area %></p>
           <h5>Address</h5>
           <p class="card-text"><%= turf.address %></p>
+          <% if(user) { %>
           <a href="/turf/book/<%= turf._id%>" class="btn btn-success">Book a Slot</a>
+          <% } else { %>
+            <!-- Button trigger modal -->
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+            Book a Slot
+          </button>
+                    <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">TurfZone</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>You must <a href="/users/login" class="btn btn-success">LogIn</a> to Book a Slot </p>
+                  <p>Dont have an accout?<a href="/users/signup" class="btn btn-primary">Sign Up</a></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }%>
         </div>
       </div>
     </div>

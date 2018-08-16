@@ -130,7 +130,6 @@ router.get('/book/:id/:date', async(req, res) => {
 
   }
 
-  console.log(fullDate);
   res.render('turf_book', {
     turf : turf,
     morningTimeArray: morningTimeArray,
@@ -147,7 +146,6 @@ router.post('/book/:id', async(req, res) => {
   var dateToDay = req.body.fullDate;
   var fullDate = req.body.fullDate;
   var day = dateToDay.split(',');
-  console.log(day);
   try {
     var turf = await Turf.findById(id);
   } catch (e) {
@@ -284,25 +282,29 @@ router.post('/book/:id', async(req, res) => {
       }
       var finalTimingsAndPrices = [];
       finalTimingsAndPrices = morningTimeAndPrice.concat(eveningTimeAndPrice, nightTimeAndPrice);
-
+      if(req.session.cart) {
+        delete req.session.cart;
+      }
+      req.session.cart = {
+        finalTimingsAndPrices: finalTimingsAndPrices,
+        fullDate: fullDate,
+        day: day[0].toLowerCase(),
+      }
       res.render('checkout', {
         turf: turf,
-        timings: timings,
-        finalTimingsAndPrices: finalTimingsAndPrices,
-        fullDate:fullDate,
-        id: id
+        id: id,
+        cart: req.session.cart
       });
     }
 });
 
-router.post('/book-now/:id', async(req, res) => {
+router.get('/book-now/:id', async(req, res) => {
   var id = req.params.id;
-  var finalTimingsAndPrices = JSON.parse(req.body.finalTimingsAndPrices);
-  var fullDate = req.body.fullDate;
-  var splitDay = fullDate.split(',');
-  var timings = finalTimingsAndPrices.map((item) => {
+  var cart = req.session.cart;
+  var timings = cart.finalTimingsAndPrices.map((item) => {
     return item.time;
   });
+  console.log(cart);
 
   try {
     var turf = await Turf.findById(id);
@@ -310,7 +312,8 @@ router.post('/book-now/:id', async(req, res) => {
     console.log(e);
     res.sendStatus(400);
   }
-  switch (splitDay[0].toLowerCase()) {
+  //tO make the selected timings not available
+  switch (cart.day) {
     case 'sunday':
         turf.day.sunday.morningTimeArray.forEach((item) => {
           if(timings.includes(item.time)) {
@@ -433,7 +436,6 @@ router.post('/book-now/:id', async(req, res) => {
     default:
   }
   turf.save().then((e) => {
-    console.log(turf.day);
   }).catch((e) => {
     console.log(e);
     res.sendStatus(400);

@@ -1,0 +1,23 @@
+<%- include('../_layouts/adminheader') %>
+<div class="row">
+  <div class="col-md-12">
+   <table class="table table-striped">
+     <tr>
+       <th>Not Available</th>
+       <th>Settings</th>
+     </tr>
+     <% times.forEach(function(time) { %>
+       <tr>
+         <td><%=time%></td>
+         <td><a href="/admin/time/change-available/<%=time%>" class="btn btn-success">Change to Available</a></td>
+       </tr>
+    <% })%>
+   </table>
+  </div>
+</div>
+
+
+<%- include('../_layouts/adminfooter') %>
+<script type="text/javascript">
+
+</script>

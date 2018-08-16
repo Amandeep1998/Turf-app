@@ -44,6 +44,9 @@ var DaySchema = new mongoose.Schema({
       },
       price: {
         type: String
+      },
+      available: {
+        type: Boolean
       }
     }],
     eveningTimeArray: [{
@@ -52,6 +55,9 @@ var DaySchema = new mongoose.Schema({
       },
       price: {
         type: String
+      },
+      available: {
+        type: Boolean
       }
     }],
     nightTimeArray: [{
@@ -60,6 +66,9 @@ var DaySchema = new mongoose.Schema({
       },
       price: {
         type: String
+      },
+      available: {
+        type: Boolean
       }
     }],
   },

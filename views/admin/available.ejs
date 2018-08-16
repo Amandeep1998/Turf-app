@@ -1,0 +1,34 @@
+<%- include('../_layouts/adminheader') %>
+<div class="row">
+  <div class="col-md-12">
+    <form action="/admin/available/search-available" method="post">
+      <div class="form-group">
+        <label for=""><b>Select Turf Name</b></label>
+        <select id ="turfName" class="form-control" name="turfName">
+          <% turfs.forEach(function(turf) { %>
+            <option value="<%= turf.turfName %>"><%= turf.turfName %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="form-group">
+        <h5>Select Day</h5>
+        <select class="form-control" name= "day">
+            <option value="sunday">Sunday</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+        </select>
+      </div>
+      <button class="btn btn-success" type="submit">Search</button>
+   </form>
+  </div>
+</div>
+
+
+<%- include('../_layouts/adminfooter') %>
+<script type="text/javascript">
+
+</script>

@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-12">
     <br><br>
-    <form action="/turf/book-now/<%=id%>" method="post">
+    <form>
 
       <table class="table table-striped table-dark">
         <tr>
@@ -20,11 +20,11 @@
               <li><%= turf.preferedFormat%></li>
             </ul>
           </td>
-          <td><%=fullDate%></td>
+          <td><%=cart.fullDate%></td>
           <td>
             <% var totalPrice = 0; %>
             <ul style="list-style-type:none;">
-              <% finalTimingsAndPrices.forEach(function(item) { %>
+              <% cart.finalTimingsAndPrices.forEach(function(item) { %>
                 <% totalPrice += +item.price %>
                 <li><button class="btn btn-info timings" type="button"><%=item.time%></button> - <b><%= item.price%></b> Rs</li>
                 <% }) %>
@@ -34,22 +34,35 @@
           </tr>
           <tr>
             <td><a class="btn btn-success" href="/turf/book/<%= turf._id %>">Change Timings</a></td>
-            <td align="right" colspan="4"><button id="book-now" class="btn btn-warning" type="submit">Book Now</button></td>
+            <td align="right" colspan="4"><a id="book-now" class="btn btn-warning">Book Now</a></td>
           </tr>
         </table>
-
-        <input type="hidden" id="final-timings" name="finalTimingsAndPrices" value="<%= JSON.stringify(finalTimingsAndPrices)%>">
-        <input type="hidden" name="fullDate" value="<%=fullDate%>">
+        <input type="hidden" id="id" value="<%=id%>">
       </form>
+      <form class="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_cart">
+        <input type="hidden" name="upload" value="1">
+        <input type="hidden" name="business" value="amandeepsaini336-facilitator@gmail.com">
+          <input type="hidden" name="item_name_1" value="<%=turf.turfName%>">
+          <input type="hidden" name="amount_1" value="<%=totalPrice%>">
+        <input type="hidden" name="amount" value="<%=totalPrice%>">
+        <input type="submit" value="PayPal">
+      </form>
+
     </div>
   </div>
 <% include _layouts/footer %>
 <script type="text/javascript">
   $(function() {
-    var finalTimings = [];
-    $('button#book-now').click(function() {
-      finalTimings = JSON.parse($('input#final-timings').val());
-      console.log(finalTimings);
+    var id = $('input#id').val();
+
+    $('a#book-now').click(function(e) {
+      e.preventDefault();
+      $.get('/turf/book-now/'+id, function () {
+        $('.ajaxbg').show()
+        $('form.pp input[type="submit"]').click();
+      });
+
     });
   })
 </script>

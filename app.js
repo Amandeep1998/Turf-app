@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
+const passport = require('passport');
 
 const path = require('path');
 
 var moment = require('moment');
-
+var {User} = require('./models/user');
 
 //Connect to database
 mongoose.connect('mongodb://localhost:27017/turf-app', { useNewUrlParser: true });
@@ -32,15 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //set global errors
 app.locals.errors = null; //to set global errors to null whenevr the page loads *note*
 
-//Find Turfs and display in index
-var {Turf} = require('./models/turf');
 
-Turf.find({}).then((turfs) => {
-    app.locals.turfs = turfs;
-}).catch((e) => {
-  console.log(e);
-  res.sendStatus(400);
-});
 
 //fileUpload middleware
 app.use(fileUpload());
@@ -102,6 +95,24 @@ app.use(function (req, res, next) {
   next();
 });
 
+//passport config
+var {passportSetup} = require('./config/passport');
+passportSetup(passport);
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.get('*', (req, res, next) => { //* gets all the get request
+  res.locals.user = req.user || null; //req.user is set if the authentication is succeful and it coomes from passport
+  next();
+});
+
+app.post('*', (req, res, next) => { //* gets all the post request
+  res.locals.user = req.user || null; //req.user is set if the authentication is succeful and it coomes from passport
+  next();
+});
 
 //Set routes
 var admin_city = require('./routes/admin_city');
@@ -109,6 +120,8 @@ var admin_area = require('./routes/admin_area');
 var admin_format = require('./routes/admin_format');
 var admin_time = require('./routes/admin_time');
 var admin_turfs = require('./routes/admin_turfs');
+var admin_available = require('./routes/admin_available');
+var users = require('./routes/users');
 var turf = require('./routes/turf');
 var pages  = require('./routes/pages.js');
 
@@ -117,7 +130,9 @@ app.use('/admin/turfs', admin_turfs);
 app.use('/admin/city', admin_city);
 app.use('/admin/area', admin_area);
 app.use('/admin/format', admin_format);
+app.use('/admin/available', admin_available);
 app.use('/admin/time', admin_time);
+app.use('/users', users);
 app.use('/turf', turf);
 app.use('/', pages);
 

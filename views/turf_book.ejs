@@ -3,20 +3,23 @@
   <div class="col-md-12 col-xs-12">
     <form method="post" action="/turf/book/<%=id%>">
       <div class="form-group">
-        <h4>User Name : User Name</h4>
+        <h4>User Name : <%=user.username%></h4>
       </div>
       <div class="form-group">
         <h4>Turf Name : <%= turf.turfName %></h4>
       </div>
       <div class="form-group">
-        <label>Mobile Number</label>
-        <input class="form-control" pattern=".{10,}" required title="Invalid Mobile Number" name="mobilenumber" value="9833908356">
+        <h4>Mobile Number : <%= user.mobileNumber %></h4>
       </div>
-
+      <hr>
       <div class="form-group">
-        <h5><b>Select Date</b></h3>
+        <h3>Select Date</h3>
         <% daysArr.forEach(function(day) { %>
+          <% if(fullDate == day) { %>
+            <a style="margin:5px" id="dates" class="btn btn-outline-info active" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
+          <% } else {%>
          <a style="margin:5px" id="dates" class="btn btn-outline-info" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
+         <% } %>
         <% }) %>
       </div>
 
@@ -25,6 +28,9 @@
         <table class="table table-striped table-sm">
           <tr>
             <th colspan="6" class="text-center">Select Timings</th>
+          </tr>
+          <tr>
+            <th colspan="6" class="text-center"><%=fullDate%></th>
           </tr>
           <tr>
             <td>
@@ -40,8 +46,13 @@
                 </tr>
                 <% morningTimeArray.forEach(function(time) { %>
                   <tr>
+                    <% if(time.available) { %>
                     <td><button id="timings" type="button" class="btn btn-outline-info"><%= time.time%></button></td>
                     <td><%= time.price%></td>
+                    <% } else { %>
+                      <td><button id="not-available" style="margin:2px;" type="button" class="btn btn-danger" disabled><%= time.time%></button></td>
+                      <td><%= time.price%></td>
+                    <% } %>
                   </tr>
                 <% }) %>
               </table>
@@ -59,8 +70,13 @@
                 </tr>
                 <% eveningTimeArray.forEach(function(time) { %>
                   <tr>
+                    <% if(time.available) { %>
                     <td><button id="timings" type="button" class="btn btn-outline-info"><%= time.time%></button></td>
                     <td><%= time.price%></td>
+                    <% } else { %>
+                      <td><button id="not-available" style="margin:2px;" type="button" class="btn btn-danger" disabled><%= time.time%></button></td>
+                      <td><%= time.price%></td>
+                    <% } %>
                   </tr>
                 <% }) %>
               </table>
@@ -78,8 +94,13 @@
                 </tr>
                 <% nightTimeArray.forEach(function(time) { %>
                   <tr>
+                    <% if(time.available) { %>
                     <td><button id="timings" type="button" class="btn btn-outline-info"><%= time.time%></button></td>
                     <td><%= time.price%></td>
+                    <% } else { %>
+                      <td><button id="not-available" style="margin:2px;" type="button" class="btn btn-danger" disabled><%= time.time%></button></td>
+                      <td><%= time.price%></td>
+                    <% } %>
                   </tr>
                 <% }) %>
               </table>
