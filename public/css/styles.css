@@ -1,19 +1,17 @@
+body{
+  background: linear-gradient(to right, rgb(240, 242, 240), rgb(0, 12, 64));
+}
+
 div.deck-align {
   margin-top: 10px;
   margin-bottom:10px;
 }
-.mySlides {
-  display:none;
-}
+
 
 button.timings {
   margin: 2px;
 }
 
-.required:before{
-  content:"*";
-  font-weight:bold;
-}
 
 .pp {
   position: absolute;
