@@ -25,6 +25,7 @@
     "mongoose": "^5.2.6",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "paypal-rest-sdk": "^1.8.1",
     "resize-img": "^1.1.2"
   }
 }

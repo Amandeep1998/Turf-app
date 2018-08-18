@@ -34,12 +34,11 @@
           </tr>
           <tr>
             <td><a class="btn btn-success" href="/turf/book/<%= turf._id %>">Change Timings</a></td>
-            <td align="right" colspan="4"><a id="book-now" class="btn btn-warning">Book Now</a></td>
+            <td align="right" colspan="4"><a id="book-now" href="/payment"  class="btn btn-warning">Book Now</a></td>
           </tr>
         </table>
-        <input type="hidden" id="id" value="<%=id%>">
       </form>
-      <form class="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+      <!-- <form class="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_cart">
         <input type="hidden" name="upload" value="1">
         <input type="hidden" name="business" value="amandeepsaini336-facilitator@gmail.com">
@@ -47,22 +46,21 @@
           <input type="hidden" name="amount_1" value="<%=totalPrice%>">
         <input type="hidden" name="amount" value="<%=totalPrice%>">
         <input type="submit" value="PayPal">
-      </form>
+      </form> -->
 
     </div>
   </div>
 <% include _layouts/footer %>
 <script type="text/javascript">
   $(function() {
-    var id = $('input#id').val();
 
-    $('a#book-now').click(function(e) {
-      e.preventDefault();
-      $.get('/turf/book-now/'+id, function () {
-        $('.ajaxbg').show()
-        $('form.pp input[type="submit"]').click();
-      });
-
-    });
+    // $('a#book-now').click(function(e) {
+    //   e.preventDefault();
+    //   $.get('/turf/book-now/'+id, function () {
+    //     $('.ajaxbg').show()
+    //     $('form.pp input[type="submit"]').click();
+    //   });
+    //
+    // });
   })
 </script>

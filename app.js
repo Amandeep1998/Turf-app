@@ -123,6 +123,7 @@ var admin_turfs = require('./routes/admin_turfs');
 var admin_available = require('./routes/admin_available');
 var users = require('./routes/users');
 var turf = require('./routes/turf');
+var payment = require('./routes/payment');
 var pages  = require('./routes/pages.js');
 
 
@@ -131,6 +132,7 @@ app.use('/admin/city', admin_city);
 app.use('/admin/area', admin_area);
 app.use('/admin/format', admin_format);
 app.use('/admin/available', admin_available);
+app.use('/payment', payment);
 app.use('/admin/time', admin_time);
 app.use('/users', users);
 app.use('/turf', turf);

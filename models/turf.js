@@ -298,6 +298,143 @@ TurfSchema.methods.saveTimingsandPrices = function(morningTimeArray, eveningTime
   }).catch((e) => console.log(e));
 }
 
+TurfSchema.methods.setNotAvailable = function(finalTimingsAndPrices, day) {
+  var turf = this;
+  var timings = finalTimingsAndPrices.map((item) => {
+    return item.time;
+  });
+
+  //tO make the selected timings not available
+  switch (day) {
+    case 'sunday':
+        turf.day.sunday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.sunday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.sunday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'monday':
+        turf.day.monday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.monday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.monday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'tuesday':
+        turf.day.tuesday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.tuesday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.tuesday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'wednesday':
+        turf.day.wednesday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.wednesday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.wednesday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'thursday':
+        turf.day.thursday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.thursday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.thursday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'friday':
+        turf.day.friday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.friday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.friday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    case 'saturday':
+        turf.day.saturday.morningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.saturday.eveningTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+        turf.day.saturday.nightTimeArray.forEach((item) => {
+          if(timings.includes(item.time)) {
+            item.available = "false";
+          }
+        });
+      break;
+    default:
+  }
+  turf.save().then((turf) => {
+  }).catch((e) => {
+    console.log(e);
+    res.sendStatus(400);
+  })
+}
+
+
 TurfSchema.methods.pushReview = function(name, comment) {
   var turf = this;
   turf.reviews.push({name, comment});
