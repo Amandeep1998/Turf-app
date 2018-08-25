@@ -16,9 +16,9 @@
         <h3>Select Date</h3>
         <% daysArr.forEach(function(day) { %>
           <% if(fullDate == day) { %>
-            <a style="margin:5px" id="dates" class="btn btn-outline-info active" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
+            <a style="margin:5px" id="dates" class="btn btn-outline-light active" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
           <% } else {%>
-         <a style="margin:5px" id="dates" class="btn btn-outline-info" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
+         <a style="margin:5px" id="dates" class="btn btn-outline-light" href="/turf/book/<%=id%>/<%=day%>"><%= day %></a>
          <% } %>
         <% }) %>
       </div>

@@ -1,7 +1,25 @@
 body{
-  background: linear-gradient(to right, rgb(240, 242, 240), rgb(0, 12, 64));
+  background: linear-gradient(rgb(33, 95, 0), rgb(228, 228, 217));
+
 }
 
+.category-style{
+  /* The image used */
+   background-image: url("http://download.4-designer.com/files/20150801/HD-football-field-54540.jpg");
+
+   /* Set a specific height */
+   height: 250px;
+
+   /* Create the parallax scrolling effect */
+   background-attachment: fixed;
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+.align-items-center-category {
+  margin: 20px;
+}
 div.deck-align {
   margin-top: 10px;
   margin-bottom:10px;
@@ -12,6 +30,10 @@ button.timings {
   margin: 2px;
 }
 
+.img-resize{
+  height: 500px !important;
+    width: 850px !important;
+}
 
 .pp {
   position: absolute;

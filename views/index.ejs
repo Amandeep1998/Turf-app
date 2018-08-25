@@ -1,8 +1,43 @@
 <% include _layouts/header %>
+<form action="/searchTurfs">
+  <div style="margin-left: calc(50% - 50vw); width: 100vw; align-items: center;" class="form-row category-style text-center">
+    <div class="col-md-3">
+      <select class="form-control select1 align-items-center-category" name="city">
+        <option>Select City</option>
+        <% cities.forEach(function(city) { %>
+          <option value="<%= city.cityName %>"><%= city.cityName %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control select2 align-items-center-category" name="area">
+        <option>Select Area</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control align-items-center-category" name="preferedFormat">
+        <option value="any">Select-A-Side</option>
+        <option value="any">Any</option>
+        <% formats.forEach(function(format) { %>
+        <option value="<%= format.format %>"><%= format.format %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-success align-items-center-category">Go</button>
+    </div>
+  </div>
+  <div style="display:none">
+    <% areas.forEach(function(area) { %>
+    <p class="getAreas"><%= JSON.stringify(area) %></p>
+    <% }) %>
+  </div>
+</form>
+<h2 class="text-center"><button class="text-center btn btn-outline-light" disabled><%=heading%></button></h2>
 <div class="row turfs">
   <% turfs.forEach(function(turf) { %>
-    <div class="col-md-3 col-xs-3">
-      <div class="card-deck deck-align">
+    <div class="col-md-3 d-flex align-items-stretch">
+      <div  class="card-deck deck-align">
           <div class="card text-center">
             <a href="/turf/<%=turf._id%>">
               <img class="card-img-top" src="/turf_images/<%=turf._id%>/<%=turf.image%>" alt="Card image cap">
@@ -22,3 +57,30 @@
     <% }); %>
   </div>
 <% include _layouts/footer %>
+<script type="text/javascript">
+var areas = [];
+var selectAllArea = $('p.getAreas');
+//Get the areas from the ejs
+selectAllArea.each(function() {
+  var value = $(this).text();
+  var jsonParse = JSON.parse(value);
+  areas.push(jsonParse);
+})
+//flter the area depending upon the selected city
+$('select.select1').change(function() {
+  var options = [];
+  var selectedCity = $('.select1 :selected').val();
+  options = areas.filter(function(area) {
+    if(area.cityName == selectedCity) {
+      return area;
+    }
+  });
+  $('select.select2').children('option').remove();
+  $.each(options, function(key, value) { //display all options
+    $('select.select2')
+    .append($("<option></option>")
+    .attr("value",value.areaName)
+    .text(value.areaName));
+  });
+});
+</script>

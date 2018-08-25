@@ -80,7 +80,6 @@ router.get('/success', async(req, res) => {
         console.log(error.response);
         throw error;
     } else {
-        console.log(payment);
         turf.setNotAvailable(cart.finalTimingsAndPrices, cart.day);
         res.render('status', {
           paymentMethod: payment.payer.payment_method,

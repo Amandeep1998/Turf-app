@@ -439,7 +439,6 @@ TurfSchema.methods.pushReview = function(name, comment) {
   var turf = this;
   turf.reviews.push({name, comment});
   turf.save().then(() => {
-    console.log(turf.reviews);
   }).catch((e) => {
     res.sendStatus(400);
   })

@@ -11,8 +11,11 @@ const path = require('path');
 var moment = require('moment');
 var {User} = require('./models/user');
 
+
 //Connect to database
-mongoose.connect('mongodb://localhost:27017/turf-app', { useNewUrlParser: true });
+var config = require('./config/database');
+
+mongoose.connect(config.database, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

@@ -24,11 +24,11 @@
               <% if(count == 0) { %>
                 <% count++; %>
               <div class="carousel-item active">
-                <img class="d-block w-100" src="/turf_images/<%=turf._id%>/gallery/<%=image%>">
+                <img class="d-block w-100 img-resize" src="/turf_images/<%=turf._id%>/gallery/<%=image%>">
               </div>
               <% }else { %>
                 <div class="carousel-item">
-                  <img class="d-block w-100" src="/turf_images/<%=turf._id%>/gallery/<%=image%>">
+                  <img class="d-block w-100 img-resize" src="/turf_images/<%=turf._id%>/gallery/<%=image%>">
                 </div>
               <% } %>
             <%  } %>
@@ -136,11 +136,12 @@
             </div>
             <div class="row">
               <div class="col-md-12">
+                <br>
                 <input type="hidden" id="turf-id" value="<%=turf._id%>">
                 <% if(user) { %>
                   <input type="hidden" id="user" value="<%=user.username%>">
                   <form class="form-group">
-                    <textarea class="form-control" rows="3" cols="30" id="comment"></textarea> <br>
+                    <textarea class="form-control" rows="3" cols="30" id="comment" placeholder="Write a Review"></textarea> <br>
                     <button style="float: right;"type="submit"  class="btn btn-primary"  id="send-review">Send</button>
                   </form>
                 <% }else { %>
