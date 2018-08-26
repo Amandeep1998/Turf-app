@@ -1,43 +1,45 @@
 <% include _layouts/header %>
-<div class="row">
-  <div class="col-md-12">
-      <h1>You have successfully booked turf</h1>
-      <table class="table table-striped table-dark">
-        <tr>
-          <th colspan="2" class="text-center">Receipt</th>
-        </tr>
-        <tr>
-          <td>Payment Method</td>
-          <td><%=paymentMethod%></td>
-        </tr>
-        <tr>
-          <td>Payer Info</td>
-          <td>
-              Name: <%= payerInfoName%> <br>
-              Email: <%= payerInfoEmail%>
-          </td>
-        </tr>
-        <tr>
-          <td>Turf Name</td>
-          <td><%= turfName%></td>
-        </tr>
-        <tr>
-          <td>Timings Booked</td>
-          <td>
-              <% finalTimingsAndPrices.forEach(function(item) { %>
-                <button class="btn btn-info timings" type="button"><%=item.time%></button> - <b><%= item.price%></b> Rs <br>
-                <% }) %>
-          </td>
-        </tr>
-        <tr>
-          <td>Amount Paid</td>
-          <td><b><%=totalPrice%> Rs</b></td>
-        </tr>
-        <tr>
-          <td>Booked At</td>
-          <td><%=bookedAt%></td>
-        </tr>
-      </table>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+        <h1>You have successfully booked turf</h1>
+        <table class="table table-striped table-dark">
+          <tr>
+            <th colspan="2" class="text-center">Receipt</th>
+          </tr>
+          <tr>
+            <td>Payment Method</td>
+            <td><%=paymentMethod%></td>
+          </tr>
+          <tr>
+            <td>Payer Info</td>
+            <td>
+                Name: <%= payerInfoName%> <br>
+                Email: <%= payerInfoEmail%>
+            </td>
+          </tr>
+          <tr>
+            <td>Turf Name</td>
+            <td><%= turfName%></td>
+          </tr>
+          <tr>
+            <td>Timings Booked</td>
+            <td>
+                <% finalTimingsAndPrices.forEach(function(item) { %>
+                  <button class="btn btn-info timings" type="button"><%=item.time%></button> - <b><%= item.price%></b> Rs <br>
+                  <% }) %>
+            </td>
+          </tr>
+          <tr>
+            <td>Amount Paid</td>
+            <td><b><%=totalPrice%> Rs</b></td>
+          </tr>
+          <tr>
+            <td>Booked At</td>
+            <td><%=bookedAt%></td>
+          </tr>
+        </table>
+    </div>
   </div>
 </div>
 <% include _layouts/footer %>
