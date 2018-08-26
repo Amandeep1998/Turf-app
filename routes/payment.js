@@ -15,14 +15,16 @@ router.get('/', (req, res) => {
 
 router.get('/pay', (req, res) => {
   var cart = req.session.cart;
+  var fullUrlSuccess = req.protocol + '://' + req.get('host') + '/payment' + '/success';
+  var fullUrlCancel = req.protocol + '://' + req.get('host') + '/payment' + '/cancel';
   const create_payment_json = {
     "intent": "sale",
     "payer": {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:3000/payment/success",
-        "cancel_url": "http://localhost:3000/payment/cancel"
+        "return_url": fullUrlSuccess,
+        "cancel_url": fullUrlCancel
     },
     "transactions": [{
         "item_list": {
