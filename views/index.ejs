@@ -1,7 +1,10 @@
 <% include _layouts/header %>
 <form action="/searchTurfs">
-  <div style="margin-left: calc(50% - 50vw); width: 100vw; align-items: center;" class="form-row category-style text-center">
-    <div class="col-md-3">
+  <div style="margin-left: calc(50% - 50vw); width: 123%; align-items: center" class="form-row category-style text-center">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-2 col-12">
       <select class="form-control select1 align-items-center-category" name="city">
         <option>Select City</option>
         <% cities.forEach(function(city) { %>
@@ -9,12 +12,12 @@
         <% }) %>
       </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2 col-12">
       <select class="form-control select2 align-items-center-category" name="area">
         <option>Select Area</option>
       </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2 col-12">
       <select class="form-control align-items-center-category" name="preferedFormat">
         <option value="any">Select-A-Side</option>
         <option value="any">Any</option>
@@ -23,8 +26,8 @@
         <% }) %>
       </select>
     </div>
-    <div class="col-md-3">
-      <button type="submit" class="btn btn-success align-items-center-category">Go</button>
+    <div class="col-md-2 col-12">
+      <button type="submit" class="btn btn-success align-items-center-category go">Go</button>
     </div>
   </div>
   <div style="display:none">

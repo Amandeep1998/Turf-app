@@ -12,13 +12,13 @@ body{
 
    /* Create the parallax scrolling effect */
    background-attachment: fixed;
-   background-position: center;
+   background-position: bottom;
    background-repeat: no-repeat;
    background-size: cover;
 }
 
 .align-items-center-category {
-  margin: 20px;
+  margin: 10px;
 }
 div.deck-align {
   margin-top: 10px;
@@ -30,9 +30,21 @@ button.timings {
   margin: 2px;
 }
 
-.img-resize{
+/* .img-resize{
   height: 500px !important;
     width: 850px !important;
+} */
+.img-responsive,
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.carousel-inner {
+  border-radius: 15px;
 }
 
 .pp {
