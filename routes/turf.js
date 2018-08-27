@@ -7,6 +7,7 @@ var {Turf} = require('./../models/turf');
 //Get /turf/:id
 router.get('/:id', async(req, res) => {
   var id = req.params.id;
+  req.session.getTurfId = id;
   try {
     var turf = await Turf.findById(id);
   } catch (e) {

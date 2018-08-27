@@ -9,7 +9,7 @@ router.get('/signup', async(req, res) => {
   res.render('signup');
 });
 
-router.post('/signup', async(req, res) => {
+router.post('/signup', async(req, res, next) => {
   var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
@@ -43,9 +43,12 @@ router.post('/signup', async(req, res) => {
         admin: 0
       });
       user.save().then((user) => {
-        console.log(user);
         req.flash('success', 'You have registered successfully');
-        res.redirect('/users/login');
+        passport.authenticate('local', {
+          successRedirect: '/',
+          failureRedirect: '/users/register',
+          failureFlash: true
+        })(req, res, next);
       });
     }
   }
@@ -60,17 +63,27 @@ router.get('/login', (req, res) => {
 
 //post login
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  })(req, res, next);
+  var id = req.session.getTurfId;
+  if(typeof id == "undefined") {
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/users/login',
+      failureFlash: true
+    })(req, res, next);
+  } else {
+    passport.authenticate('local', {
+      successRedirect: `/turf/${id}`,
+      failureRedirect: '/users/login',
+      failureFlash: true
+    })(req, res, next);
+  }
 });
 
 router.get('/logout', (req, res) => {
   if(req.session.cart) {
     delete req.session.cart;
   }
+  delete req.session.getTurfId;
   req.logout();
   req.flash('success', 'You have successfully logged out');
   res.redirect('/users/login');
