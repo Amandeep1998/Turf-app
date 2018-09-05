@@ -7,7 +7,7 @@ var {Turf} = require('./../models/turf');
 
 router.get('/', async(req, res) => {
   try {
-    var turfs = await Turf.find({});
+    var turfs = await Turf.find({'_id': req.user.admin});
   } catch (e) {
     res.sendStatus(400);
   }

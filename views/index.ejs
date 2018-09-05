@@ -39,6 +39,9 @@
   </form>
 </div>
 <div class="container">
+  <% if(!user) { %>
+  <marquee style="color: white;">You must <b style="color:black">LogIn</b> to Book or Upload A Turf...</marquee>
+  <% } %>
   <h2 class="text-center"><button class="text-center btn btn-outline-light" disabled><%=heading%></button></h2>
   <div class="row turfs">
     <% turfs.forEach(function(turf) { %>

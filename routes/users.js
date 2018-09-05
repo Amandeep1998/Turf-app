@@ -1,7 +1,6 @@
 const express = require('express');
 const passport = require('passport');
 var router = express.Router();
-//Find Turfs and display in index
 var {User} = require('./../models/user');
 
 
@@ -14,7 +13,7 @@ router.post('/signup', async(req, res, next) => {
   var email = req.body.email;
   var password = req.body.password;
   var mobileNumber = req.body.mobileNumber;
-
+  var admin = [];
   req.checkBody('email', 'Invalid Email').isEmail();
   req.checkBody('password2', 'Password do not match').equals(password);
 
@@ -40,15 +39,24 @@ router.post('/signup', async(req, res, next) => {
         email,
         password,
         mobileNumber,
-        admin: 0
+        admin
       });
       user.save().then((user) => {
         req.flash('success', 'You have registered successfully');
-        passport.authenticate('local', {
-          successRedirect: '/',
-          failureRedirect: '/users/register',
-          failureFlash: true
-        })(req, res, next);
+        var id = req.session.getTurfId;
+        if(typeof id == "undefined") {
+          passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/users/login',
+            failureFlash: true
+          })(req, res, next);
+        } else {
+          passport.authenticate('local', {
+            successRedirect: `/turf/${id}`,
+            failureRedirect: '/users/login',
+            failureFlash: true
+          })(req, res, next);
+        }
       });
     }
   }

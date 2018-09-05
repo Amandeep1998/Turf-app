@@ -10,7 +10,7 @@ const {eveningTimeArray} = require('./../playground/time.js');
 const {nightTimeArray} = require('./../playground/time.js');
 
 router.get('/', async(req, res) => {
-  var turfs = await Turf.find({});
+  var turfs = await Turf.find({'_id': req.user.admin});
   res.render('admin/time', {
     turfs : turfs,
     morningTimeArray : morningTimeArray,

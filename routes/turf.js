@@ -10,6 +10,8 @@ router.get('/:id', async(req, res) => {
   req.session.getTurfId = id;
   try {
     var turf = await Turf.findById(id);
+    var nearByTurf = await Turf.findOne({area: turf.area, turfName: {$ne : turf.turfName}});
+    console.log(nearByTurf);
   } catch (e) {
     console.log(e);
     res.sendStatus(400);
@@ -24,6 +26,7 @@ router.get('/:id', async(req, res) => {
         galleryImages = files;
         res.render('turf', {
           turf: turf,
+          nearByTurf: nearByTurf,
           galleryImages: galleryImages
         });
       }

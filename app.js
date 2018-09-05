@@ -51,9 +51,6 @@ app.use(session({
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true,
-  // cookie: { secure: true,
-  //   maxAge:60000
-  //  }
 }));
 
 //Express -validator middleware
@@ -129,7 +126,6 @@ var turf = require('./routes/turf');
 var payment = require('./routes/payment');
 var pages  = require('./routes/pages.js');
 
-
 app.use('/admin/turfs', admin_turfs);
 app.use('/admin/city', admin_city);
 app.use('/admin/area', admin_area);
@@ -146,3 +142,5 @@ var port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Starting server at port ${port}`);
 });
+
+module.exports = {app};

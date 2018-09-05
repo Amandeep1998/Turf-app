@@ -1,5 +1,6 @@
 const express = require('express');
 var router  = express.Router();
+var mongoose = require('mongoose');
 const mkdirp = require('mkdirp');
 const fs = require('fs-extra');
 const resizeImg = require('resize-img');
@@ -9,15 +10,14 @@ var {City} = require('./../models/city');
 var {Area} = require('./../models/area');
 var {Format} = require('./../models/format');
 var {Day} = require('./../models/turf');
-
+var {User} = require('./../models/user');
 //Get /admin/turfs
 router.get('/', async(req, res) => {
   try {
-    var turfs = await Turf.find({});
+    var turfs = await Turf.find({'_id': req.user.admin});
     res.render('admin/turfs', {
       turfs : turfs
     });
-
   } catch (e) {
     console.log(e);
     res.sendStatus(400);
@@ -110,7 +110,7 @@ router.post('/add-turf', async(req, res) => {
           day: day,
           reviews: reviews
         });
-        turf.save().then((turf) => {
+        turf.save().then(async(turf) => {
           mkdirp('public/turf_images/'+turf._id, function(err) {//it is use to make directories
             return console.log(err);
           });
@@ -128,7 +128,8 @@ router.post('/add-turf', async(req, res) => {
               return console.log(err);
             });
           }
-
+          var user  = await User.findById(req.user._id);
+          user.saveTurfIdAsAdminId(turf._id);
           req.flash('success', 'Turf succesfully Added');
           res.redirect('/admin/turfs');
         }).catch((e) => {
@@ -299,7 +300,9 @@ router.get('/delete-turf/:id', async(req, res) => {
     if(err) {
       console.log(err);
     } else {
-     Turf.findByIdAndRemove(id).then(() => {
+     Turf.findByIdAndRemove(id).then(async() => {
+       var user = await User.findById(req.user._id);
+       user.deleteAdmin(id);
        req.flash('success', 'Turf Deleted');
        res.redirect('/admin/turfs');
      })

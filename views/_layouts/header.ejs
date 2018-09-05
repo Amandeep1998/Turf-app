@@ -34,6 +34,11 @@
           <li class="nav-item active">
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
+          <% if(user) { %>
+            <li class="nav-item active">
+              <a class="nav-link" href="/admin/turfs">Upload Turf</a>
+            </li>
+          <% } %>
           <% if(user && user.admin == 1) { %>
             <li class="nav-item active">
               <a href="/admin/turfs" class="nav-link">Admin Area</a>

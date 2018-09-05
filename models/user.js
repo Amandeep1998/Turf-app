@@ -18,9 +18,9 @@ var UserSchema =  mongoose.Schema({
     type: String,
     required: true
   },
-  admin: {
-    type: Number
-  }
+  admin: [{
+    type:  mongoose.Schema.Types.ObjectId
+  }]
 });
 
 UserSchema.pre('save', function(next) {
@@ -36,6 +36,29 @@ UserSchema.pre('save', function(next) {
     next();
   }
 });
+
+UserSchema.methods.saveTurfIdAsAdminId = function(turfId) {
+  var user = this;
+  user.admin.push(turfId);
+  user.save().then(() => {
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+UserSchema.methods.deleteAdmin = function(turfId) {
+  var user = this;
+  var ids = user.admin.filter((id) => {
+    return id.toString() !== turfId; //because id was object
+  });
+  user.admin = ids;
+  user.save().then(() => {
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {User};
